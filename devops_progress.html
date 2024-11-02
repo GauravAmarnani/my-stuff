@@ -23,9 +23,34 @@
         h1 {
             text-align: center;
             color: #4a90e2;
-            margin-bottom: 20px;
-            font-size: 2.5em;
+            font-size: 2.8em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        .overall-progress {
+            text-align: center;
+            font-size: 1.5em;
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+        .main-progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .main-progress-bar-fill {
+            height: 18px;
+            border-radius: 8px;
+            background-color: #4a90e2;
+            width: 60%; /* Set this to represent overall completion percentage */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            color: white;
+            font-weight: bold;
         }
         .topic {
             margin-bottom: 20px;
@@ -82,7 +107,7 @@
             transition: color 0.3s ease;
         }
         .subtopic h3:hover {
-            color: #2196F3;
+            color: #1565c0;
         }
     </style>
     <script>
@@ -104,9 +129,11 @@
 
 <body>
     <div class="container">
-        <h1>DevOps Progress Tracker</h1>
-
-
+    <h1>DevOps Progress Tracker</h1>
+        <div class="overall-progress">Overall Progress: 3%</div>
+            <div class="main-progress-bar">
+            <div class="main-progress-bar-fill" style="width: 3%;"></div>
+        </div>
 
         <div class="topic">
             <h2>1. Networking</h2>
