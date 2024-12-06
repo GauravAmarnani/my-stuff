@@ -112,6 +112,7 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Subtopic toggle functionality
             const topicHeaders = document.querySelectorAll(".topic h2");
             topicHeaders.forEach(header => {
                 header.addEventListener("click", function() {
@@ -123,8 +124,69 @@
                     }
                 });
             });
+
+            // Calculate topic and overall progress
+            function updateProgress() {
+                // For each topic
+                const topics = document.querySelectorAll(".topic");
+                topics.forEach(topic => {
+                    let totalProgress = 0;
+                    let subtopics = topic.querySelectorAll(".subtopic");
+                    let totalSubtopics = subtopics.length;
+
+                    subtopics.forEach(subtopic => {
+                        const progress = parseInt(subtopic.getAttribute('data-progress') || 0);
+                        totalProgress += progress;
+                    });
+
+                    // Calculate the average progress for the topic
+                    const topicProgress = totalProgress / totalSubtopics;
+
+                    // Update the progress bar for the topic
+                    const topicProgressBar = topic.querySelector(".progress-bar-fill");
+                    if (topicProgressBar) {
+                        topicProgressBar.style.width = `${topicProgress}%`;
+                    }
+
+                    // Update the topic header with the progress percentage
+                    const topicHeader = topic.querySelector("h2");
+                    if (topicHeader) {
+                        topicHeader.innerHTML = `${topicHeader.innerHTML.split(":")[0]}: ${topicProgress.toFixed(2)}%`;
+                    }
+                });
+
+                // Calculate overall progress
+                let overallProgress = 0;
+                let totalTopics = topics.length;
+
+                topics.forEach(topic => {
+                    const topicProgressBar = topic.querySelector(".progress-bar-fill");
+                    if (topicProgressBar) {
+                        overallProgress += parseFloat(topicProgressBar.style.width);
+                    }
+                });
+
+                // Calculate the overall progress as an average of all topics
+                overallProgress = overallProgress / totalTopics;
+
+                // Update the overall progress bar
+                const overallProgressBar = document.querySelector(".main-progress-bar-fill");
+                if (overallProgressBar) {
+                    overallProgressBar.style.width = `${overallProgress}%`;
+                }
+
+                // Update the overall progress text
+                const overallProgressText = document.querySelector(".overall-progress");
+                if (overallProgressText) {
+                    overallProgressText.innerText = `Overall Progress: ${overallProgress.toFixed(2)}%`;
+                }
+            }
+
+            // Call the updateProgress function to initialize progress
+            updateProgress();
         });
-    </script>
+</script>
+
 </head>
 
 <body>
@@ -143,7 +205,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 1 : IP, CIDR, SUBNETS, PORTS</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -151,7 +213,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 2 : OSI Model</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -159,7 +221,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 3 : AWS Networking Basics</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -167,7 +229,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 4 : AWS Networking Advanced</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -175,7 +237,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 5 : Project AWS</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -183,7 +245,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6 : Temp Stuff</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -202,7 +264,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 1 : Internet working and other basic stuff</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -210,7 +272,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2 : All Commands</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -218,7 +280,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3 : User Management and File Permissions</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -226,7 +288,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4 : Networking commands</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -234,7 +296,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5 : AWK vs SED vs GREP</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -242,7 +304,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6 : Important commands for Cloud & DevOps Engineer</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -261,7 +323,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 1 : Introduction to Version Control</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -269,7 +331,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 2 : Commits, Branches, Merges</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -277,7 +339,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 3 : Collaborative Workflow</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -285,7 +347,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 4 : Pull requests & Code reviews</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -293,7 +355,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 5 : Automating workflows & Github Actions</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -301,7 +363,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6 : Handson Practice</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
@@ -320,7 +382,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 1 : IAM & AWS CLI</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -329,7 +391,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 2 : EC2</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -339,7 +401,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 3 : ELB + ASG</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -349,7 +411,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 4 : RDS + Aurora + ElastiCache</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -359,7 +421,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 5 : Route 53</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -369,7 +431,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 6 : VPC Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -379,7 +441,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 7 : Amazon S3</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -389,7 +451,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 8 : CloudFront</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -399,7 +461,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 9 : ECS, ECR & Fragate - Docker in AWS</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -409,7 +471,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 10 : AWS Elastic Beanstalk</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -419,7 +481,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 11 : AWS CloudFormation</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -429,7 +491,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 12 : AWS Integration & Messaging: SQS, SNS & Kineses</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -439,7 +501,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 13 : AWS Monitoring & Audit: CloudWatch, XRay & CloudTrail</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -449,7 +511,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 14 : AWS Serverless: Lambda</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -459,7 +521,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 15 : AWS Serverless: DynamoDB</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -469,7 +531,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 16 : AWS Serverless: API Gateway</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -479,7 +541,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 17 : AWS CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -489,7 +551,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 18 : AWS Serverless: Serverless Application Model</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -499,7 +561,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 19 : Cloud Development Kit</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -509,7 +571,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 20 : Cognito: User Pools, Identity Pools & Sync</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -519,7 +581,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 21 : Other Serverless: Step Functions & AppSync</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -529,7 +591,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 22 : Advanced Identity</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -539,7 +601,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 23 : AWS Security & Encryption: KMS, Encryption SDK, SSM Parameter</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -549,7 +611,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 24 : AWS Other Services</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -559,7 +621,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 25 : AWS Final Cleanup</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -569,7 +631,7 @@
 
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 26 : AWS Certified Developer Associate</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -589,7 +651,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 1: Jenkins Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -597,7 +659,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 2: Jenkins Setup & Interface</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -605,7 +667,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="100">
                     <h3>Subtopic 3: Extending Jenkins</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
@@ -613,7 +675,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Jenkins Pipelines</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -621,7 +683,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Automation & Security</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -640,7 +702,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Docker Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -648,7 +710,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: Docker Commands</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -656,7 +718,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Docker Run</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -664,7 +726,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Docker Images</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -672,7 +734,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Docker Compose</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -680,7 +742,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: Docker Engine, Storage</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -688,7 +750,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Docker Networking</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -696,7 +758,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Docker Registry</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -704,7 +766,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: Docker SWARM & Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -712,7 +774,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 10: Advanced Docker Engine</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -720,7 +782,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 11: Advanced Docker Image Management</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -728,7 +790,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 12: Advanced Docker Security</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -736,7 +798,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 13: Advanced Docker Networking</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -744,7 +806,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 14: Advanced Docker Storage</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -752,7 +814,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 15: Advanced Docker Compose</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -760,7 +822,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 16: Advanced Docker SWARM</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -768,7 +830,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 17: Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -776,14 +838,14 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 18: Advanced Docker Engine Enterprise</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
                     </div>
                 </div>
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 19: Advanced Docker Trusted Registry</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -791,7 +853,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 20: Advanced Docker Disaster Recovery</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -799,7 +861,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 21: Advanced Docker Mock Exam</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -818,7 +880,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Kubernetes Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -826,7 +888,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: Kubernetes Concepts - Pods, ReplicaSets, Deployment</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -834,7 +896,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Networking in Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -842,7 +904,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Services in Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -850,7 +912,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Microservices Architecture</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -858,7 +920,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: Kubernetes on Cloud</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -866,7 +928,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Advanced Core Concepts</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -874,7 +936,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Advanced Configuration</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -882,7 +944,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: Advanced Multi Container Pods</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -890,7 +952,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 10: Advanced Observability</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -898,7 +960,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 11: Advanced POD Design</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -906,7 +968,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 12: Advanced Services & Networking</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -914,7 +976,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 13: Advanced State Persistence</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -922,7 +984,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 14: Advanced Security</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -930,7 +992,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 15: Helm Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -938,7 +1000,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 16: Advanced Kubernetes Challenges</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -946,7 +1008,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 17: Kubernetes Mock Exams</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -965,7 +1027,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -983,6 +1045,27 @@
             <div class="progress-bar">
                 <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
             </div>
+
+
+            <div class="subtopics">
+
+
+                <div class="subtopic" data-progress="0">
+                    <h3>Subtopic 1: Project Created</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+                
+                <div class="subtopic" data-progress="0">
+                    <h3>Subtopic 2: Project Hosted</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
 
@@ -995,7 +1078,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Ansible Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1003,7 +1086,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: Ansible Inventory</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1011,7 +1094,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Ansible Variables & Facts</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1019,7 +1102,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Ansible Playbooks</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1027,7 +1110,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Ansible Modules & Plugins</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1035,7 +1118,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: Ansible Handlers, Roles & Collections</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1043,7 +1126,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Ansible Templates</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1051,7 +1134,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Ansible Other Topics</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1059,7 +1142,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: Ansible Mock Exam</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1078,7 +1161,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Terraform Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1086,7 +1169,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: Terraform State</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1094,7 +1177,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Working with Terraform</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1102,7 +1185,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Terraform with AWS</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1110,7 +1193,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Remote State</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1118,7 +1201,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: Terraform Provisioners</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1126,7 +1209,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Terraform Import, Tainting Resources & Debugging</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1134,7 +1217,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Terraform Modules</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1142,7 +1225,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: Terraform Functions & Conditional Expressions</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1161,7 +1244,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Prometheus Fundamentals</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1169,7 +1252,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: PromQL</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1177,7 +1260,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Dashboarding & Visualization</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1185,7 +1268,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Application Instrumentation</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1193,7 +1276,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Service Discovery</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1201,7 +1284,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: Push Gateway</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1209,7 +1292,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Alerting</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1217,7 +1300,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Monitoring Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1225,7 +1308,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: Grafana Loki Essentials 1</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1233,7 +1316,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 10: Grafana Loki Essentials 2</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1252,7 +1335,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1273,7 +1356,7 @@
             <div class="subtopics">
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 1: Linux</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1281,7 +1364,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 2: Git</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1289,7 +1372,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 3: Docker</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1297,7 +1380,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 4: Kubernetes</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1305,7 +1388,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 5: Helm</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1313,7 +1396,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 6: HashiCorp</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1321,7 +1404,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 7: Ansible</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1329,7 +1412,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 8: Jenkins CI/CD</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1337,7 +1420,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 9: AWS</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1345,7 +1428,7 @@
                 </div>
 
                 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 10: Monitoring & Alerting</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1353,7 +1436,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 11: Programming</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
@@ -1361,7 +1444,7 @@
                 </div>
 
 
-                <div class="subtopic">
+                <div class="subtopic" data-progress="0">
                     <h3>Subtopic 12: DevOps Miscellaneous</h3>
                     <div class="progress-bar">
                         <div class="progress-bar-fill" style="width: 1%; background-color: #4a90e2;"></div>
