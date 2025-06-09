@@ -1,1 +1,555 @@
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Progress Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            font-size: 2.8em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        .overall-progress {
+            text-align: center;
+            font-size: 1.5em;
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+        .main-progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .main-progress-bar-fill {
+            height: 18px;
+            border-radius: 8px;
+            background-color: #4a90e2;
+            width: 60%; /* Set this to represent overall completion percentage */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            color: white;
+            font-weight: bold;
+        }
+        .topic {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #ffffff;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .topic:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .topic h2 {
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .topic h2:hover {
+            color: #2196F3;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 12px;
+            border-radius: 8px;
+            transition: width 0.4s ease-in-out, background-color 0.4s ease;
+            background-color: #4a90e2;
+        }
+        .subtopics {
+            display: none;
+            margin-top: 15px;
+            padding-left: 15px;
+            animation: fadeIn 0.4s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .subtopic {
+            margin-bottom: 10px;
+        }
+        .subtopic h3 {
+            font-size: 16px;
+            margin: 0;
+            color: #4a90e2;
+            transition: color 0.3s ease;
+        }
+        .subtopic h3:hover {
+            color: #1565c0;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Subtopic toggle functionality
+            const topicHeaders = document.querySelectorAll(".topic h2");
+            topicHeaders.forEach(header => {
+                header.addEventListener("click", function() {
+                    const subtopics = this.nextElementSibling.nextElementSibling;
+                    if (subtopics.style.display === "none" || subtopics.style.display === "") {
+                        subtopics.style.display = "block";
+                    } else {
+                        subtopics.style.display = "none";
+                    }
+                });
+            });
+
+            // Calculate topic and overall progress
+            function updateProgress() {
+                // For each topic
+                const topics = document.querySelectorAll(".topic");
+                topics.forEach(topic => {
+                    let totalProgress = 0;
+                    let subtopics = topic.querySelectorAll(".subtopic");
+                    let totalSubtopics = subtopics.length;
+
+                    subtopics.forEach(subtopic => {
+                        const progress = parseInt(subtopic.getAttribute('data-progress') || 0);
+                        totalProgress += progress;
+                    });
+
+                    // Calculate the average progress for the topic
+                    const topicProgress = totalProgress / totalSubtopics;
+
+                    // Update the progress bar for the topic
+                    const topicProgressBar = topic.querySelector(".progress-bar-fill");
+                    if (topicProgressBar) {
+                        topicProgressBar.style.width = `${topicProgress}%`;
+                    }
+
+                    // Update the topic header with the progress percentage
+                    const topicHeader = topic.querySelector("h2");
+                    if (topicHeader) {
+                        topicHeader.innerHTML = `${topicHeader.innerHTML.split(":")[0]}: ${topicProgress.toFixed(2)}%`;
+                    }
+                });
+
+                // Calculate overall progress
+                let overallProgress = 0;
+                let totalTopics = topics.length;
+
+                topics.forEach(topic => {
+                    const topicProgressBar = topic.querySelector(".progress-bar-fill");
+                    if (topicProgressBar) {
+                        overallProgress += parseFloat(topicProgressBar.style.width);
+                    }
+                });
+
+                // Calculate the overall progress as an average of all topics
+                overallProgress = overallProgress / totalTopics;
+
+                // Update the overall progress bar
+                const overallProgressBar = document.querySelector(".main-progress-bar-fill");
+                if (overallProgressBar) {
+                    overallProgressBar.style.width = `${overallProgress}%`;
+                }
+
+                // Update the overall progress text
+                const overallProgressText = document.querySelector(".overall-progress");
+                if (overallProgressText) {
+                    overallProgressText.innerText = `Overall Progress: ${overallProgress.toFixed(2)}%`;
+                }
+            }
+
+            // Call the updateProgress function to initialize progress
+            updateProgress();
+        });
+</script>
+
+</head>
+
+<body>
+    <div class="container">
+    <h1>DevOps Progress Tracker</h1>
+        <div class="overall-progress">Overall Progress: 17%</div>
+            <div class="main-progress-bar">
+            <div class="main-progress-bar-fill" style="width: 17%;"></div>
+        </div>
+
+        <div class="topic">
+            <h2>1. Networking</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 85%; background-color: #4a90e2;"></div>
+            </div>
+            <div class="subtopics">
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 1 : IP, CIDR, SUBNETS, PORTS</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 2 : OSI Model</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+                
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 3 : AWS Networking Basics</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 4 : AWS Networking Advanced</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 5 : Project AWS</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 6 : Temp Stuff</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="topic">
+            <h2>2. Linux</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 20%; background-color: #4a90e2;"></div>
+            </div>
+            <div class="subtopics">
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 1 : Internet working and other basic stuff</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 2 : All Commands</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+                
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 3 : User Management and File Permissions</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 4 : Networking commands</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 5 : AWK vs SED vs GREP</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 6 : Important commands for Cloud & DevOps Engineer</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="topic">
+            <h2>3. Git & GitHub</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 80%; background-color: #4a90e2;"></div>
+            </div>
+            <div class="subtopics">
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 1 : Introduction to Version Control</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 2 : Commits, Branches, Merges</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+                
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 3 : Collaborative Workflow</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 4 : Pull requests & Code reviews</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 5 : Automating workflows & Github Actions</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+                <div class="subtopic" data-progress="0">
+                    <h3>Subtopic 6 : Handson Practice</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 0%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="topic">
+            <h2>4. AWS</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 34%; background-color: #4a90e2;"></div>
+            </div>
+            <div class="subtopics">
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 1 : IAM & AWS CLI</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 2 : EC2</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 3 : ELB + ASG</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 4 : RDS + Aurora + ElastiCache</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 5 : Route 53</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 6 : VPC Fundamentals</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 7 : Amazon S3</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 8 : CloudFront</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 9 : ECS, ECR & Fragate - Docker in AWS</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 10 : AWS Elastic Beanstalk</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 11 : AWS CloudFormation</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 12 : AWS Integration & Messaging: SQS, SNS & Kineses</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 13 : AWS Monitoring & Audit: CloudWatch, XRay & CloudTrail</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 14 : AWS Serverless: Lambda</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 15 : AWS Serverless: DynamoDB</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 16 : AWS Serverless: API Gateway</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="subtopic" data-progress="100">
+                    <h3>Subtopic 17 : AWS CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%; background-color: #4a90e2;"></div>
+                    </div>
+                </div>
+         </div> 
+     </div> 
+</div>
+   </body> 
+</html> 
+       
