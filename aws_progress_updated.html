@@ -154,7 +154,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    function getProgressKey(subtopic) {
+        const topicTitle = subtopic.closest(".topic").querySelector("h2").textContent.split(":")[0].trim();
+        const subtopicTitle = subtopic.querySelector("h3").textContent.split(":")[0].trim();
+        return `${topicTitle}__${subtopicTitle}`;
+    }
+
     function setSubtopicProgress(subtopic, progress) {
+        const key = getProgressKey(subtopic);
+        localStorage.setItem(key, progress);
         subtopic.setAttribute("data-progress", progress);
         const fillBar = subtopic.querySelector(".progress-bar-fill");
         fillBar.style.width = `${progress}%`;
@@ -162,6 +170,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.querySelectorAll(".subtopic").forEach(sub => {
+        const key = getProgressKey(sub);
+        const savedProgress = localStorage.getItem(key);
+        if (savedProgress !== null) {
+            sub.setAttribute("data-progress", savedProgress);
+            sub.querySelector(".progress-bar-fill").style.width = `${savedProgress}%`;
+        }
+
         const btnContainer = document.createElement("div");
         btnContainer.className = "subtopic-buttons";
 
